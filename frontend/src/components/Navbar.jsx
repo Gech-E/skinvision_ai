@@ -38,9 +38,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-dark-bg/80 border-b border-accent dark:border-dark-border">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 text-text dark:text-dark-text text-xl font-bold hover:opacity-80 transition-opacity">
+        <Link to="/" className="flex items-center gap-3 text-text dark:text-dark-text text-xl font-bold hover:opacity-80 transition-opacity cursor-pointer">
           <span className="text-2xl"></span>
-          <span className="text-heading-md">SkinVision AI</span>
+          <span className="text-heading-md hover:text-primary dark:hover:text-secondary transition-colors">SkinVision AI</span>
         </Link>
         <nav className="flex items-center gap-6">
           <Link to="/upload" className="text-text/80 dark:text-dark-text/80 hover:text-primary dark:hover:text-secondary transition-colors font-medium">
