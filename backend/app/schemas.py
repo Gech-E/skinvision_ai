@@ -38,15 +38,6 @@ class UserOut(BaseModel):
     id: int
     email: EmailStr
     role: str
-    phone_number: Optional[str] = None
-    email_notifications: Optional[str] = "true"
-    sms_notifications: Optional[str] = "false"
-
-
-class UserUpdate(BaseModel):
-    phone_number: Optional[str] = None
-    email_notifications: Optional[str] = None
-    sms_notifications: Optional[str] = None
 
 
 class TokenData(BaseModel):

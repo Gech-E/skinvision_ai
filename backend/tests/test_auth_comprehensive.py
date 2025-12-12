@@ -12,8 +12,8 @@ def test_password_hashing():
     hashed = auth.get_password_hash(password)
     
     assert hashed != password
-    assert len(hashed) > 20  # bcrypt hashes are long
-    assert hashed.startswith("$2b$")  # bcrypt format
+    assert len(hashed) > 20  # argon2 hashes are long
+    assert hashed.startswith("$argon2")  # argon2 format
 
 
 def test_password_verification_correct(db_session):
@@ -73,7 +73,7 @@ def test_first_user_becomes_admin(db_session):
     from app.routers.auth import router
     # Simulate signup
     from passlib.context import CryptContext
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
     
     user = models.User(
         email=email,
@@ -90,7 +90,7 @@ def test_subsequent_users_are_regular_users(db_session):
     """Test that users after the first are regular users."""
     # Add first user (admin)
     from passlib.context import CryptContext
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
     
     admin = models.User(
         email="admin@example.com",

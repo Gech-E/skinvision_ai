@@ -1,10 +1,16 @@
 """Unit tests for ML and Grad-CAM functionality."""
 import os
 import tempfile
+import sys
+from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from app.ml.grad_cam import generate_gradcam_heatmap, save_heatmap_overlay
+ROOT_DIR = Path(__file__).resolve().parents[2]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.append(str(ROOT_DIR))
+
+from model.grad_cam import generate_gradcam_heatmap, save_heatmap_overlay
 
 
 def test_save_heatmap_overlay_creates_file():

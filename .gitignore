@@ -21,6 +21,10 @@ build/
 .env
 .env.local
 .env.*.local
+backend/.env
+frontend/.env
+*.env
+!*.env.example
 
 # IDE
 .vscode/
@@ -71,13 +75,15 @@ logs/
 temp_*
 tmp_*
 
-# ML Models (large files)
+# ML Models (large files - exclude model weights)
+*.pth
 *.h5
 *.pkl
 *.joblib
 models/
 checkpoints/
+!model/*.md
+!model/*.py
 
 # Docker
-.dockerignore
 docker-compose.override.yml

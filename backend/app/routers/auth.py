@@ -10,7 +10,7 @@ import os, datetime as dt
 
 router = APIRouter()
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 ALGO = "HS256"
 SECRET = os.environ.get("JWT_SECRET", "devsecret")
 
@@ -47,16 +47,17 @@ def signup(body: UserCreate, db: Session = Depends(get_db)):
         role = "admin" if first_user else "user"
         
         # Hash password
-        hashed_password = get_password_hash(body.password)
+        try:
+            hashed_password = get_password_hash(body.password)
+        except ValueError:
+            # Argon2 may reject extremely large inputs; surface a clear error
+            raise HTTPException(status_code=400, detail="Password is too large to hash. Please use a shorter password.")
         
-        # Create user with default notification preferences
+        # Create user
         user = models.User(
             email=body.email, 
             hashed_password=hashed_password, 
-            role=role,
-            phone_number=getattr(body, 'phone_number', None),  # Optional phone number
-            email_notifications="true",  # Enable email by default
-            sms_notifications="false"   # Disable SMS by default
+            role=role
         )
         db.add(user)
         db.commit()

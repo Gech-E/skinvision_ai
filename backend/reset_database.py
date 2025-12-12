@@ -28,14 +28,14 @@ def reset_database():
     print("\n🔨 Creating new database with current schema...")
     Base.metadata.create_all(bind=engine)
     print("✅ Database created successfully!")
-    print("\n📊 Schema includes:")
-    print("   - Users table with: id, email, hashed_password, role, phone_number, email_notifications, sms_notifications")
-    print("   - Predictions table with: id, image_url, predicted_class, confidence, heatmap_url, timestamp, user_id, email_sent, sms_sent")
+    print("\n📋 Schema includes:")
+    print("   - Users table: id, email, hashed_password, role")
+    print("   - Predictions table: id, image_url, predicted_class, confidence, heatmap_url, timestamp, user_id")
 
 if __name__ == "__main__":
     try:
         reset_database()
     except Exception as e:
-        print(f"\n❌ Reset failed: {e}")
+        print(f"\n Reset failed: {e}")
         import traceback
         traceback.print_exc()

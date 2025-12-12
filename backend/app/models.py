@@ -13,19 +13,14 @@ class Prediction(Base):
     heatmap_url = Column(String, nullable=True)
     timestamp = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
-    email_sent = Column(String, nullable=True, default="false")  # Track if email was sent
-    sms_sent = Column(String, nullable=True, default="false")  # Track if SMS was sent
 
 
-class User(Base):  # optional
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     role = Column(String, nullable=False, default="user")
-    phone_number = Column(String, nullable=True)  # For SMS notifications
-    email_notifications = Column(String, nullable=False, default="true")  # "true" or "false"
-    sms_notifications = Column(String, nullable=False, default="false")  # "true" or "false"
 
 

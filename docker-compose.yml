@@ -1,40 +1,73 @@
-version: '3.9'
 services:
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: skinvision-backend
     ports:
       - "8000:8000"
+    env_file:
+      - backend/.env
     environment:
-      - DATABASE_URL=postgresql+psycopg2://postgres:postgres@db:5432/skinvision
-      - MODEL_PATH=/app/app/ml/model.h5
-      - STATIC_DIR=/app/app/static
-      - JWT_SECRET=devsecret
+      - DATABASE_URL=${DATABASE_URL:-postgresql+psycopg2://postgres:postgres@db:5432/skinvision}
+      - MODEL_PATH=${MODEL_PATH:-/app/model/efficientnet_b0_best.pth}
+      - STATIC_DIR=${STATIC_DIR:-/app/app/static}
+      - JWT_SECRET=${JWT_SECRET:-devsecret}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./backend/app/static:/app/app/static
+      - ./model:/app/model:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
     container_name: skinvision-frontend
     ports:
-      - "3000:3000"
+      - "3000:80"
+    env_file:
+      - frontend/.env
     environment:
-      - VITE_API_BASE=http://localhost:8000
+      - VITE_API_BASE=${VITE_API_BASE:-http://localhost:8000}
     depends_on:
       - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
   db:
     image: postgres:15-alpine
     container_name: skinvision-db
     ports:
       - "5432:5432"
+    env_file:
+      - backend/.env
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=skinvision
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-skinvision}
     volumes:
       - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   db_data:
-
-
