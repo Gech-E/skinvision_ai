@@ -41,15 +41,15 @@ export default function Home() {
               <span>100% Private</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xl">📱</span>
+              <span className="text-xl"></span>
               <span>Mobile-Friendly</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xl">🩺</span>
+              <span className="text-xl"></span>
               <span>Dermatologist-Reviewed</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xl">⚡</span>
+              <span className="text-xl"></span>
               <span>Instant Results</span>
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function Home() {
             </div>
             
             <div className="bg-white dark:bg-dark-card rounded-2xl shadow-card border border-accent dark:border-dark-border p-6 hover:shadow-glow transition-all">
-              <div className="text-4xl mb-4">⚡</div>
+              <div className="text-4xl mb-4"></div>
               <h3 className="text-xl font-semibold text-text dark:text-dark-text mb-2">Instant Results</h3>
               <p className="text-sm text-text/70 dark:text-dark-text/70">
                 Get analysis results in seconds, not days. Time-sensitive diagnosis made accessible.
